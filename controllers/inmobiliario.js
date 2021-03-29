@@ -34,8 +34,45 @@ const saveData=async (req,res)=>{
 
 }
 
+const filterData= async (req,res) => {
+    const precioMin=req.query.precioMin;
+    const precioMax= req.query.precioMax;
+    const habitaciones=req.query.habitaciones;
+
+  
+
+    try {
+        if(!precioMin  || !precioMax || !habitaciones === '')
+        return res.json({
+            message:'Por Favor usa todos los campos del filtro',
+            data:'',
+            error:true,
+            code:456
+        }) 
+        const data = await inmobiliario.find(
+            {
+                Habitaciones:habitaciones,
+                Precio: {
+                    $gte:precioMin,
+                    $lt: precioMax
+                }
+            }
+            ).exec();
+        res.json({
+            message:'Resultados encontrados',
+            data:data,
+            error:false,
+            code:200
+        });
+      
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 module.exports={
     test,
-    saveData
+    saveData,
+    filterData
 }
