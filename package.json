@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "mongoose": "^5.12.1",
     "moongoose": "0.0.5",
-    "neat-csv": "^6.0.1"
+    "neat-csv": "^6.0.1",
+    "pdfmake": "^0.1.70"
   }
 }
