@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 const inmobiliario= require('../models/inmobiliario');
 const readFile=require('../utils/readFiles');
 const dist=require('../utils/distancia')
-
+const Json2csvParser = require("json2csv").Parser;
+const jsoncsv = require('json-csv')
+const fs = require("fs");
+const dotenv= require('dotenv').config();
 // Reports
 
 const pdfMakePrinter = require("pdfmake/src/printer");
@@ -203,10 +206,88 @@ const report= async (req,res)=>{
         res.send(result);
       });
         doc.end();
-    }else{
+    }else if(tiporeporte==='CSV'){
 
+        var dataCsv=[];
+        dataArray.forEach(async element => {
+        var newInmobiliario= new inmobiliario(element)
+            dataCsv.push(newInmobiliario);
+        })
+        
+        // const json2csvParser= new Json2csvParser({header:true});
+        // const csvData= json2csvParser.parse(dataCsv);
+        const csvData= await jsoncsv.buffered(dataCsv);
+        jsoncsv.buffered(dataArray, {
+            fields : [
+              {
+                  name : 'Titulo',
+                  label : 'Titulo',
+                  quoted : true
+              },
+              {
+                  name : 'Anunciante',
+                  label : 'Anunciante'
+              },
+              {
+                  name : 'Telefonos',
+                  label : 'Telefonos'
+              },
+              {
+                  name : 'Precio',
+                  label : 'Precio'
+              },
+              {
+                  name : 'Provincia',
+                  label : 'Provincia'
+              },
+              {
+                  name : 'Ciudad',
+                  label : 'Ciudad'
+              },
+              {
+                  name : 'Habitaciones',
+                  label : 'Habitaciones'
+              }
+            ]},
+            async(err, csv) => {
+                if (err) return console.log(err);
+                const hoy= new Date();
+                var fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
+                var hora = hoy.getHours() + '-' + hoy.getMinutes() + '-' + hoy.getSeconds();
+                var fechaYHora = fecha + '-' + hora;
+                fs.writeFile('./files/'+fechaYHora+'_reporte.csv',csv,(error)=>{
+                    if(error) return console.log(error);
+        
+                    console.log('Archivo csv creado');
+        
+                })
+
+               
+
+                
+
+                res.json({
+                    message:process.env.URL_BASE+'download/'+fechaYHora+'_reporte.csv',
+                    data:'',
+                    error:false,
+                    code:200
+                })
+            });
+       
     }
         
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const download = async (req,res)=>{
+    try {
+        var file = fs.readFileSync('./files/'+req.params.file, 'binary'); 
+        res.setHeader('Content-disposition', 'attachment; filename=' + req.params.file);
+        // res.setHeader('Content-Length', file.length); res.write(file, 'binary'); 
+        res.end();
+
     } catch (error) {
         console.log(error);
     }
@@ -218,5 +299,6 @@ module.exports={
     saveData,
     filterData,
     promedioData,
-    report
+    report,
+    download
 }

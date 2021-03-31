@@ -8,5 +8,6 @@ api.get('/getdata',inmobiliarioController.saveData);
 api.get('/getdata/filter',inmobiliarioController.filterData);
 api.get('/getdata/distancia',inmobiliarioController.promedioData);
 api.get('/getdata/report',inmobiliarioController.report);
+api.get('/download/:file',inmobiliarioController.download);
 
 module.exports =api;
