@@ -259,18 +259,12 @@ const report= async (req,res)=>{
                     if(error) return console.log(error);
         
                     console.log('Archivo csv creado');
+                    var file = fs.readFileSync('./files/'+fechaYHora+'_reporte.csv', 'binary'); 
+                    res.setHeader('Content-disposition', 'attachment; filename=' +fechaYHora+'_reporte.csv');
+                    res.setHeader('Content-Length', file.length); 
+                    res.write(file, 'binary'); 
+                    res.end();
         
-                })
-
-               
-
-                
-
-                res.json({
-                    message:process.env.URL_BASE+'download/'+fechaYHora+'_reporte.csv',
-                    data:'',
-                    error:false,
-                    code:200
                 })
             });
        
@@ -285,7 +279,8 @@ const download = async (req,res)=>{
     try {
         var file = fs.readFileSync('./files/'+req.params.file, 'binary'); 
         res.setHeader('Content-disposition', 'attachment; filename=' + req.params.file);
-        // res.setHeader('Content-Length', file.length); res.write(file, 'binary'); 
+        res.setHeader('Content-Length', file.length); 
+        res.write(file, 'binary'); 
         res.end();
 
     } catch (error) {
