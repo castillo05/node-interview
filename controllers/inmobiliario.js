@@ -46,13 +46,22 @@ const saveData=async (req,res)=>{
 }
 
 const filterData= async (req,res) => {
-    const precioMin=req.query.precioMin;
-    const precioMax= req.query.precioMax;
-    const habitaciones=req.query.habitaciones;
+    const precioMin=parseInt(req.query.precioMin);
+    const precioMax= parseInt(req.query.precioMax);
+    const habitaciones=parseInt(req.query.habitaciones);
 
-  
+    
 
     try {
+       
+        if(!Number.isInteger(precioMin)   || !Number.isInteger(precioMax)  || !Number.isInteger(habitaciones) )
+        return res.json({
+            message:'Por Favor los campos del filtro deben ser numeros',
+            data:'',
+            error:true,
+            code:456
+        }) 
+
         if(!precioMin  || !precioMax || !habitaciones === '')
         return res.json({
             message:'Por Favor usa todos los campos del filtro',

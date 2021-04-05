@@ -1,0 +1,163 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Yet Another Node.js Blogg Application API",
+      "description": "Yet Another Node.js Blogg Application API",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "tags": [
+      {
+        "name": "Users",
+        "description": "API for users in the system"
+      }
+    ],
+    "schemes": [
+      "http"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/getdata/filter": {
+        "get": {
+          "tags": [
+            "Filter"
+          ],
+          "description": "Filtrando datos de inmobiliarias",
+          "parameters": [
+            {
+              "name": "precioMin",
+              "in": "query",
+              "description": "Precio minimo de la habitacion",
+              "schema": {
+                "$ref": "#/definitions/Filter"
+              }
+            },
+            {
+                "name": "precioMax",
+                "in": "query",
+                "description": "Precio maximo de la habitacion",
+                "schema": {
+                  "$ref": "#/definitions/Filter"
+                }
+              },
+              {
+                "name": "habitaciones",
+                "in": "query",
+                "description": "Numero de habitaciones",
+                "schema": {
+                  "$ref": "#/definitions/Filter"
+                }
+              }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Resultados encontrados",
+              "schema": {
+                "$ref": "#/definitions/Filter"
+              }
+            }
+          }
+        }
+       
+      },
+      "/users/{userId}": {
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of user that we want to find",
+            "type": "string"
+          }
+        ],
+        "get": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "Get user with given ID",
+          "responses": {
+            "200": {
+              "description": "User is found",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete user with given ID",
+          "tags": [
+            "Users"
+          ],
+          "responses": {
+            "200": {
+              "description": "User is deleted",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        },
+        "put": {
+          "summary": "Update user with give ID",
+          "tags": [
+            "Users"
+          ],
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "description": "User with new values of properties",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User is updated",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Filter": {
+        "required": [
+          "precioMin",
+          "precioMax",
+          "habitaciones"
+        ],
+        "properties": {
+          "precioMin": {
+            "type": "integer",
+            "uniqueItems": true
+          },
+          "precioMax": {
+            "type": "integer",
+            "uniqueItems": true
+          },
+          "habitaciones": {
+            "type": "integer",
+            "uniqueItems": true
+          }
+        }
+      }
+    }
+  }

@@ -3,6 +3,8 @@ const readFile=require('./utils/readFiles')
 
 // Rutas
 const inmobiliarioRoute=require('./routes/inmobiliario.route');
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger-doc.json');
 
 const app= express();
 
@@ -35,7 +37,7 @@ app.get('/readfile',async(req,res)=>{
     res.json(data)
    
 })
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api',inmobiliarioRoute);
 
 module.exports =app;
