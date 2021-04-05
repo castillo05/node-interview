@@ -16,5 +16,7 @@ Estos son los endpoint disponibles:
  
 ## Se recomienda usar postman para testear esta api.
 
+## Esta api esta documentada con Swagger accede a ella con http://localhost:3000/api-docs
+
 En el caso de ver el reporte PDF se recomienda usar google chrome.
 ## Desarrollada por Jorge Castillo email: jc@jorgecastillo.pro
