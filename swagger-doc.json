@@ -2,8 +2,8 @@
     "swagger": "2.0",
     "info": {
       "version": "1.0.0",
-      "title": "Yet Another Node.js Blogg Application API",
-      "description": "Yet Another Node.js Blogg Application API",
+      "title": "Documentation node interview NodeJS",
+      "description": "Documentation node interview NodeJS",
       "license": {
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT"
@@ -14,7 +14,7 @@
     "tags": [
       {
         "name": "Users",
-        "description": "API for users in the system"
+        "description": "API para consulta de datos de inmobiliaria"
       }
     ],
     "schemes": [
@@ -73,69 +73,53 @@
         }
        
       },
-      "/users/{userId}": {
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "description": "ID of user that we want to find",
-            "type": "string"
-          }
-        ],
+      "/getdata/distancia": {
         "get": {
           "tags": [
-            "Users"
+            "Distancia"
           ],
-          "summary": "Get user with given ID",
-          "responses": {
-            "200": {
-              "description": "User is found",
-              "schema": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        },
-        "delete": {
-          "summary": "Delete user with given ID",
-          "tags": [
-            "Users"
-          ],
-          "responses": {
-            "200": {
-              "description": "User is deleted",
-              "schema": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        },
-        "put": {
-          "summary": "Update user with give ID",
-          "tags": [
-            "Users"
-          ],
+          "description": "Filtrando datos de inmobiliarias dentro del rango de mi ubicación",
           "parameters": [
             {
-              "name": "user",
-              "in": "body",
-              "description": "User with new values of properties",
+              "name": "latitud",
+              "in": "query",
+              "description": "Latitud de la ubicacion",
               "schema": {
-                "$ref": "#/definitions/User"
+                "$ref": "#/definitions/Distancia"
               }
-            }
+            },
+            {
+                "name": "longitud",
+                "in": "query",
+                "description": "Longitud de la ubicacion",
+                "schema": {
+                  "$ref": "#/definitions/Distancia"
+                }
+              },
+              {
+                "name": "distancia",
+                "in": "query",
+                "description": "Distancia en KM",
+                "schema": {
+                  "$ref": "#/definitions/Distancia"
+                }
+              }
+          ],
+          "produces": [
+            "application/json"
           ],
           "responses": {
             "200": {
-              "description": "User is updated",
+              "description": "Resultados encontrados",
               "schema": {
-                "$ref": "#/definitions/User"
+                "$ref": "#/definitions/Distancia"
               }
             }
           }
         }
+       
       }
+      
     },
     "definitions": {
       "Filter": {
@@ -154,6 +138,27 @@
             "uniqueItems": true
           },
           "habitaciones": {
+            "type": "integer",
+            "uniqueItems": true
+          }
+        }
+      },
+      "Distancia": {
+        "required": [
+          "longitud",
+          "latitud",
+          "distancia"
+        ],
+        "properties": {
+          "longitud": {
+            "type": "integer",
+            "uniqueItems": true
+          },
+          "latitud": {
+            "type": "integer",
+            "uniqueItems": true
+          },
+          "distancia": {
             "type": "integer",
             "uniqueItems": true
           }
