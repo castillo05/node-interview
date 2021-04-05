@@ -9,7 +9,7 @@
         "url": "https://opensource.org/licenses/MIT"
       }
     },
-    "host": "https://node-interview-2021.herokuapp.com",
+    "host": "node-interview-2021.herokuapp.com",
     "basePath": "/api",
     "tags": [
       {
